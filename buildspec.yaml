@@ -17,3 +17,9 @@ phases:
       - docker tag dev-sato-app-deploy:latest ${REPOSITORY_URI}:latest
       - docker push ${REPOSITORY_URI}:${IMAGE_TAG}
       - docker push ${REPOSITORY_URI}:latest
+  post_build:
+    commands:
+      - echo "[{\"name\":\"${APP_CONTAINER_NAME}\",\"imageUri\":\"${REPOSITORY_URI}:${IMAGE_TAG}\"}]" > imagedefinitions.json
+artifacts:
+  files:
+    - imagedefinitions.json
