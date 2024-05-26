@@ -12,6 +12,7 @@ services:
       - 3000:3000
     environment:
       - MY_APP_DATABASE_URL=mysql2://admin:mypassword@db:3306/app
+      - SECRET_KEY_BASE=dummydummy
     depends_on:
       - db
       - redis
