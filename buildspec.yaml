@@ -1,0 +1,19 @@
+version: 0.2
+env:
+  shell: bash
+phases:
+  pre_build:
+    commands:
+      - codebuild-breakpoint # debug flag using session manager
+      - echo Logging in to Amazon ECR...
+      - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | tr -dc 'a-zA-Z0-9' | cut -c 1-7)
+  build:
+    commands:
+      - echo Building the Docker image...
+      - docker compose build dev-deploy
+      - docker tag dev-sato-app-deploy:latest ${REPOSITORY_URI}:${IMAGE_TAG}
+      - docker tag dev-sato-app-deploy:latest ${REPOSITORY_URI}:latest
+      - docker push ${REPOSITORY_URI}:${IMAGE_TAG}
+      - docker push ${REPOSITORY_URI}:latest
