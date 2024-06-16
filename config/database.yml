@@ -13,6 +13,7 @@ default: &default
   adapter: mysql2
   encoding: utf8mb4
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  database: 'app' # データベース名
 
 development:
   <<: *default
@@ -47,4 +48,6 @@ test:
 #
 production:
   <<: *default
-  url: <%= ENV["MY_APP_DATABASE_URL"] %>
+  host: <%= ENV["MYSQL_HOST"] %> # データベースのホスト名
+  username: <%= ENV["MYSQL_USERNAME"] %> # データベースのユーザー名
+  password: <%= ENV["MYSQL_PASSWORD"] %> # データベースのパスワード
