@@ -19,7 +19,7 @@ phases:
       - docker push ${REPOSITORY_URI}:latest
   post_build:
     commands:
-      - echo "[{\"name\":\"${APP_CONTAINER_NAME}\",\"imageUri\":\"${REPOSITORY_URI}:${IMAGE_TAG}\"}]" > imagedefinitions.json
+      - echo "[{\"name\":\"${APP_CONTAINER_NAME}\",\"imageUri\":\"${REPOSITORY_URI}:${IMAGE_TAG}\"}]" > app.json
 artifacts:
   files:
-    - imagedefinitions.json
+    - app.json
