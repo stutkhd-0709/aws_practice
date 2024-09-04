@@ -54,7 +54,7 @@ USER rails:rails
 COPY entry.sh /entry.sh
 
 # Entrypoint prepares the database.
-ENTRYPOINT ["sh entry.sh"]
+ENTRYPOINT ["sh /entry.sh"]
 
 # # Start the server by default, this can be overwritten at runtime
 # EXPOSE 3000
