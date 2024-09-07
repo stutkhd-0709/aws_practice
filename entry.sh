@@ -2,4 +2,4 @@
 
 sleep 10
 
-rails serv
+./bin/rails serv
