@@ -51,10 +51,10 @@ RUN useradd rails --create-home --shell /bin/bash && \
     chown -R rails:rails db log storage tmp
 USER rails:rails
 
-COPY entry.sh /entry.sh
+COPY entry.sh .
 
 # Entrypoint prepares the database.
-ENTRYPOINT ["sh /entry.sh"]
+ENTRYPOINT ["./entry.sh"]
 
 # # Start the server by default, this can be overwritten at runtime
 # EXPOSE 3000
