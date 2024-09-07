@@ -1,9 +1,9 @@
 #!/bin/sh
 
-sleep 30
+sleep 10
 
 echo "hello"
 
-ls
+# ls
 
-./bin/rails serv
+# ./bin/rails serv
