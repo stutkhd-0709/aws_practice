@@ -1,5 +1,9 @@
 #!/bin/sh
 
-sleep 10
+sleep 30
+
+echo "hello"
+
+ls
 
 ./bin/rails serv
