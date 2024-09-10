@@ -18,6 +18,7 @@ phases:
         if [[ stopCode != 'EssentialContainerExited' && exitCode != 0 ]]; then
           exit 1
         fi
+      - exit 1
       - codebuild-breakpoint # debug flag using session manager
       - echo Logging in to Amazon ECR...
       - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}
