@@ -2,7 +2,7 @@
 
 sleep 10
 
-echo "hello"
+# echo "hello"
 
 # ls
 
