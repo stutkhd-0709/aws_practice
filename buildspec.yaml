@@ -4,8 +4,18 @@ env:
 phases:
   pre_build:
     commands:
+      - >
+        run_task_response=$(aws ecs run-task --cluster dev-sato-cdk-practice-app-cluster \
+        --task-definition arn:aws:ecs:ap-northeast-1:381716011867:task-definition/dev-sato-cdk-practice-app-task-def:14 \
+        --network-configuration awsvpcConfiguration={"subnets"=["subnet-07af51797366f0f72"],"securityGroups"=["sg-0334a8ad0486657ae"],"assignPublicIp"="DISABLED"} \
+        --launch-type FARGATE)
+      - taskArn=$(echo $run_task_response | jq -r '.tasks[0].taskArn')
+      - aws ecs wait tasks-stopped --cluster dev-sato-cdk-practice-app-cluster --tasks ${taskArn}
+      - describe_task=$(aws ecs describe-tasks --cluster dev-sato-cdk-practice-app-cluster --tasks ${taskArn}
+      - stopCode=$(echo $x | jq -r '.tasks[0].stopCode')
+      - exitCode=$(echo $x | jq -r '.tasks[0].containers[0].exitCode')
       - |
-        if [[ 1 == 1 ]]; then
+        if [[ stopCode != 'EssentialContainerExited' && exitCode != 0 ]]; then
           exit 1
         fi
       - codebuild-breakpoint # debug flag using session manager
