@@ -11,7 +11,7 @@ phases:
         --launch-type FARGATE)
       - taskArn=$(echo $run_task_response | jq -r '.tasks[0].taskArn')
       - aws ecs wait tasks-stopped --cluster dev-sato-cdk-practice-app-cluster --tasks ${taskArn}
-      - describe_task=$(aws ecs describe-tasks --cluster dev-sato-cdk-practice-app-cluster --tasks ${taskArn}
+      - describe_task=$(aws ecs describe-tasks --cluster dev-sato-cdk-practice-app-cluster --tasks ${taskArn})
       - stopCode=$(echo $x | jq -r '.tasks[0].stopCode')
       - exitCode=$(echo $x | jq -r '.tasks[0].containers[0].exitCode')
       - |
