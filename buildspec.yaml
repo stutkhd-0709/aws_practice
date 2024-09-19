@@ -15,7 +15,8 @@ phases:
       - stopCode=$(echo $describe_task | jq -r '.tasks[0].stopCode')
       - exitCode=$(echo $describe_task | jq -r '.tasks[0].containers[0].exitCode')
       - |
-        if [ 1 -eq 1 ] || ( [ "$stopCode" != "EssentialContainerExited" ] && [ "$exitCode" -ne 0 ] ); then
+        if [ "$stopCode" != "EssentialContainerExited" ] && [ "$exitCode" -ne 0 ]; then
+          echo "An error occurred while running the ECSTask"
           exit 1
         fi
 #       - exit 1
