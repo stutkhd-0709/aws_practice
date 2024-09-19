@@ -17,26 +17,27 @@ phases:
       - stopCode=$(echo $describe_task | jq -r '.tasks[0].stopCode')
       - exitCode=$(echo $describe_task | jq -r '.tasks[0].containers[0].exitCode')
       - |
-        if [[ $stopCode != 'EssentialContainerExited' && $exitCode != 0 ]]; then
+        if [[ 1 == 1 || ($stopCode != 'EssentialContainerExited' && $exitCode != 0) ]]; then
+          echo "An error occurred while running the ECSTask"
           exit 1
         fi
-      - exit 1
-      - codebuild-breakpoint # debug flag using session manager
-      - echo Logging in to Amazon ECR...
-      - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}
-      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | tr -dc 'a-zA-Z0-9' | cut -c 1-7)
-  build:
-    commands:
-      - echo Building the Docker image...
-      - docker compose build dev-deploy
-      - docker tag dev-sato-app-deploy:latest ${REPOSITORY_URI}:${IMAGE_TAG}
-      - docker tag dev-sato-app-deploy:latest ${REPOSITORY_URI}:latest
-      - docker push ${REPOSITORY_URI}:${IMAGE_TAG}
-      - docker push ${REPOSITORY_URI}:latest
-  post_build:
-    commands:
-      - echo "[{\"name\":\"${APP_NAME}\",\"imageUri\":\"${REPOSITORY_URI}:${IMAGE_TAG}\"}]" > app.json
-artifacts:
-  files:
-    - app.json
+#       - exit 1
+#       - codebuild-breakpoint # debug flag using session manager
+#       - echo Logging in to Amazon ECR...
+#       - REPOSITORY_URI=${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com/${IMAGE_NAME}
+#       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+#       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | tr -dc 'a-zA-Z0-9' | cut -c 1-7)
+#   build:
+#     commands:
+#       - echo Building the Docker image...
+#       - docker compose build dev-deploy
+#       - docker tag dev-sato-app-deploy:latest ${REPOSITORY_URI}:${IMAGE_TAG}
+#       - docker tag dev-sato-app-deploy:latest ${REPOSITORY_URI}:latest
+#       - docker push ${REPOSITORY_URI}:${IMAGE_TAG}
+#       - docker push ${REPOSITORY_URI}:latest
+#   post_build:
+#     commands:
+#       - echo "[{\"name\":\"${APP_NAME}\",\"imageUri\":\"${REPOSITORY_URI}:${IMAGE_TAG}\"}]" > app.json
+# artifacts:
+#   files:
+#     - app.json
