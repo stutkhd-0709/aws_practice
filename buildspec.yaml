@@ -2,21 +2,21 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - >
-        run_task_response=$(aws ecs run-task --cluster dev-sato-cdk-practice-app-cluster
-        --task-definition arn:aws:ecs:ap-northeast-1:381716011867:task-definition/dev-sato-cdk-practice-app-task-def:15
-        --network-configuration "awsvpcConfiguration={subnets=['subnet-07af51797366f0f72'],securityGroups=['sg-0334a8ad0486657ae'],assignPublicIp='DISABLED'}"
-        --launch-type FARGATE)
-      - echo $run_task_response
-      - taskArn=$(echo $run_task_response | jq -r '.tasks[0].taskArn')
-      - aws ecs wait tasks-stopped --cluster dev-sato-cdk-practice-app-cluster --tasks ${taskArn}
-      - describe_task=$(aws ecs describe-tasks --cluster dev-sato-cdk-practice-app-cluster --tasks ${taskArn})
-      - echo $describe_task
-      - stopCode=$(echo $describe_task | jq -r '.tasks[0].stopCode')
-      - exitCode=$(echo $describe_task | jq -r '.tasks[0].containers[0].exitCode')
+      # - >
+      #   run_task_response=$(aws ecs run-task --cluster dev-sato-cdk-practice-app-cluster
+      #   --task-definition arn:aws:ecs:ap-northeast-1:381716011867:task-definition/dev-sato-cdk-practice-app-task-def:15
+      #   --network-configuration "awsvpcConfiguration={subnets=['subnet-07af51797366f0f72'],securityGroups=['sg-0334a8ad0486657ae'],assignPublicIp='DISABLED'}"
+      #   --launch-type FARGATE)
+      # - echo $run_task_response
+      # - taskArn=$(echo $run_task_response | jq -r '.tasks[0].taskArn')
+      # - aws ecs wait tasks-stopped --cluster dev-sato-cdk-practice-app-cluster --tasks ${taskArn}
+      # - describe_task=$(aws ecs describe-tasks --cluster dev-sato-cdk-practice-app-cluster --tasks ${taskArn})
+      # - echo $describe_task
+      - stopCode="xx"
+      - exitCode=1
       - |
         if [ "$stopCode" != "EssentialContainerExited" ] && [ "$exitCode" -ne 0 ]; then
-          echo "An error occurred while running the ECSTask"
+          echo "An error occurred while running the ECSTas"
           exit 1
         fi
 #       - exit 1
